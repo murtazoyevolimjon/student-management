@@ -119,4 +119,176 @@ void add_student() {
     printf("Student added successfully!\n");
 }
 
-// yuqoridagi misoldan qarab bajarish mumkin
+void get_students(){
+    if (student_count > 0)
+    {
+        printf("ID | First Name | Last Name | Age | Phone        | Email                   | Parent's Name | Parent's Phone | Parent's Email\n");
+        for (int i = 0; i < student_count; i++)
+        {
+           printf("%-3d", i + 1);
+            printf("| %-10s ", students[i].first_name);
+            printf("| %-9s ", students[i].last_name);
+            printf("| %-3d ", students[i].age);
+            printf("| %-12s ", students[i].contact.phone);
+            printf("| %-23s ", students[i].contact.email);
+            printf("| %-13s ", students[i].parent.name);
+            printf("| %-14s ", students[i].parent.contact.phone);
+            printf("| %s\n", students[i].parent.contact.email); 
+        }  
+    } else
+    {
+        printf("Students not found !");
+    }
+    
+}
+
+void get_student_detail(){
+    int ID;
+    printf("Enter ID get to student"); scanf("%d", &ID);
+    if (ID - 1 <= student_count && student_count !=0 )
+    {
+        printf("First name: %s\n", students[ID - 1].first_name);
+        printf("Last name: %s\n", students[ID - 1].last_name);
+        printf("Age: %d\n", students[ID - 1].age);
+        printf("Email: %s\n", students[ID - 1].contact.phone);
+        printf("Parent's Name: %s\n", students[ID - 1].parent.name);
+        printf("Parent's Phone: %s\n", students[ID - 1].parent.contact.phone);
+        printf("Parent's Email: %s\n", students[ID - 1].parent.contact.email);
+    } else
+    {
+        printf("No students was found for this ID");
+    }
+}
+
+void get_student_by_name(){
+    char search_name[100];
+    if (student_count != 0)
+    {
+        printf("Please enter student name: ");
+        scanf("%s", &search_name);
+        printf("ID | First Name | Last Name | Age | Phone        | Email                   | Parent's Name | Parent's Phone | Parent's Email\n");
+
+        for (int i = 0; i < student_count; i++)
+        {
+            if (strstr(students[i].first_name, search_name))
+            {
+                 printf("%-3d", i + 1);
+            printf("| %-10s ", students[i].first_name);
+            printf("| %-9s ", students[i].last_name);
+            printf("| %-3d ", students[i].age);
+            printf("| %-12s ", students[i].contact.phone);
+            printf("| %-23s ", students[i].contact.email);
+            printf("| %-13s ", students[i].parent.name);
+            printf("| %-14s ", students[i].parent.contact.phone);
+            printf("| %s\n", students[i].parent.contact.email);
+            }   
+        }
+    } else
+    {
+        printf("We have not a list of students");
+    }
+
+}
+
+void add_lesson(){
+    lessons = realloc(lessons, (lesson_count + 1) * sizeof(Lesson));
+    if (!lessons)
+    {
+        printf("Memory allocation failed!\n");
+        exit(1);
+    }
+    printf("Dars nomini kiriting: ");
+    scanf("%s", lessons[lesson_count].name);
+    lessons[lesson_count].id = lesson_count + 1;
+    lesson_count++;
+    printf("Lesson added successfully!\n");
+}
+
+ void add_score(){
+    if (student_count != 0)
+    {
+        if (lesson_count != 0)
+        {
+            int choose_student;
+            printf("ID | First Name | Last Name | Age | Phone        | Email                   | Parent's Name | Parent's Phone | Parent's Email\n");
+            for (int  i = 0; i < student_count; i++)
+            {
+                printf("%-3d|", "%-11s |"," %-10s|"," %-4d|"," %-13d|"," %-24s|"," %-14s|"," %-15s|"," %s\n");
+                students[i].first_name;
+                students[i].last_name;
+                students[i].age;
+                students[i].contact.phone;
+                students[i].contact.email;
+                students[i].parent.name;
+                students[i].parent.contact.phone;
+                students[i].parent.contact.email;            
+            }
+            printf("Talabalarni Id si orqali baholang, ID kiriitng: ");
+            scanf("%d", &choose_student);
+            if (choose_student - 1 <= student_count)
+            {   
+                int choose_lesson; 
+                printf(" ID | Fanlar\n--------------------\n");
+                for (int i = 0; i < lesson_count; i++)
+                {
+                    printf(" %-2d ", lessons[i].id);
+                    printf("| %s\n",lessons[i].name);
+                }
+                printf("Fanni tanlang: ");
+                scanf("%d", &choose_lesson);
+                if (choose_lesson - 1 <= lesson_count)
+                {
+                    scores = realloc(scores, (student_count + 1) * sizeof(Score));
+                    if (!scores)
+                    {
+                        printf("Memory allocation failed!\n");
+                        exit(1); //dasturni yakunlash
+                    }
+                    printf("%sning %s fanidagi bahosini kiriting: ", students[choose_student - 1].first_name, lessons[choose_lesson].name);
+                    scanf("%d", &scores[score_count].score);      
+                }else
+                {
+                    printf("Not found subject");
+                }
+                
+                
+            }else
+            {
+                printf("Bu ID da talaba yuq");
+            }
+        
+            
+            
+            
+        }else
+        {
+            printf("Jadvalga birorta ham dars qo`yilmagan!\n");
+        }
+        
+        
+    }else
+    {
+        printf("Student not found \n");
+    }
+        
+}
+void get_lesson_statistics(){
+    int lesson;
+    printf("Enter lesson ID: ");
+    scanf("%d", &lesson);
+
+    int total_score = 0, count = 0;
+    for (int i = 0; i < score_count; i++) {
+        if (scores[i].lesson.id == lesson) {
+            total_score += scores[i].score;
+            count++;
+        }
+    }
+
+    if (count == 0) {
+        printf("Baholanmagan !\n");
+        return;
+    }
+
+    printf("O'rtacha ball:  %d: %f\n", lesson, (float)total_score / count);
+}
